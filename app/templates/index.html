@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ app_name }}</title>
+    <meta name="description" content="AI-powered research and brief generation assistant" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <img src="/assets/logo.svg" alt="Hasti Research Radar logo" class="brand-logo" />
+          <div>
+            <p class="eyebrow">AI RESEARCH SYSTEM</p>
+            <h1>{{ app_name }}</h1>
+          </div>
+        </div>
+        <nav class="main-nav">
+          <a href="#overview">Overview</a>
+          <a href="#generator">Generator</a>
+          <a href="#workflow">Workflow</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" id="overview">
+          <div class="hero-copy">
+            <span class="pill">Research smarter. Decide faster.</span>
+            <h2>Turn raw topics into clear research briefs and strategic action plans.</h2>
+            <p>
+              Hasti Research Radar gives founders, researchers, analysts, and operators a calm, structured way to move from question to evidence to execution.
+            </p>
+            <div class="cta-row">
+              <a href="#generator" class="primary-btn">Start a brief</a>
+              <a href="#workflow" class="secondary-btn">See workflow</a>
+            </div>
+            <ul class="stats">
+              <li><strong>3x</strong><span>Faster framing</span></li>
+              <li><strong>24/7</strong><span>Research support</span></li>
+              <li><strong>AI</strong><span>ready strategy</span></li>
+            </ul>
+          </div>
+
+          <div class="hero-visual">
+            <img src="/assets/hero-illustration.svg" alt="Research radar dashboard illustration" />
+          </div>
+        </section>
+
+        <section class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-icon">◎</span>
+            <h3>Signal discovery</h3>
+            <p>Capture trends, questions, and focus areas from a single topic prompt.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">▣</span>
+            <h3>Strategic brief</h3>
+            <p>Generate structured outputs with findings, risks, and recommended actions.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">⬢</span>
+            <h3>Execution focus</h3>
+            <p>Translate research into an action plan your team can actually ship next.</p>
+          </article>
+        </section>
+
+        <section class="generator-panel" id="generator">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">RESEARCH GENERATOR</p>
+              <h3>Build a custom brief</h3>
+            </div>
+            <span class="status-dot">Live</span>
+          </div>
+
+          <form id="research-form" class="research-form">
+            <div class="field-row">
+              <label>
+                <span>Research topic</span>
+                <input type="text" name="topic" value="AI-powered research workflows for startup founders" required />
+              </label>
+            </div>
+
+            <div class="field-row two-col">
+              <label>
+                <span>Audience</span>
+                <input type="text" name="audience" value="founders and operators" />
+              </label>
+              <label>
+                <span>Goal</span>
+                <input type="text" name="goal" value="Build a clear research and action plan" />
+              </label>
+            </div>
+
+            <div class="field-row">
+              <label>
+                <span>Focus areas</span>
+                <textarea name="focus_areas" rows="3">market demand, product differentiation, future execution risks</textarea>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <label>
+                <span>Source mix</span>
+                <textarea name="sources" rows="3">public market research, user interviews, product patterns, competitor reading</textarea>
+              </label>
+            </div>
+
+            <button type="submit" class="primary-btn">Generate brief</button>
+          </form>
+
+          <div id="loading" class="loading hidden">Generating insight...</div>
+
+          <div id="result-panel" class="result-panel">
+            <div class="result-header">
+              <p class="eyebrow">OUTPUT</p>
+              <h4 id="result-title">Research brief preview</h4>
+            </div>
+
+            <div class="result-section">
+              <h5>Executive summary</h5>
+              <p id="executive-summary">Your generated brief will appear here.</p>
+            </div>
+
+            <div class="result-grid">
+              <div class="result-block">
+                <h5>Key findings</h5>
+                <ul id="key-findings"></ul>
+              </div>
+              <div class="result-block">
+                <h5>Risks</h5>
+                <ul id="risks"></ul>
+              </div>
+            </div>
+
+            <div class="result-grid">
+              <div class="result-block">
+                <h5>Recommendations</h5>
+                <ul id="recommendations"></ul>
+              </div>
+              <div class="result-block">
+                <h5>Action plan</h5>
+                <ol id="action-plan"></ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="workflow" id="workflow">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">WORKFLOW</p>
+              <h3>How the system moves from signal to action</h3>
+            </div>
+          </div>
+
+          <div class="workflow-steps">
+            <div class="step">
+              <span>01</span>
+              <h4>Frame the question</h4>
+              <p>Define the topic, audience, and strategic goal.</p>
+            </div>
+            <div class="step">
+              <span>02</span>
+              <h4>Map the context</h4>
+              <p>Review focus areas, market patterns, and source mix.</p>
+            </div>
+            <div class="step">
+              <span>03</span>
+              <h4>Generate the brief</h4>
+              <p>Turn signals into findings, risks, and recommendations.</p>
+            </div>
+            <div class="step">
+              <span>04</span>
+              <h4>Ship the plan</h4>
+              <p>Prioritize next actions for clarity, testing, and momentum.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', path='/app.js') }}"></script>
+  </body>
+</html>
