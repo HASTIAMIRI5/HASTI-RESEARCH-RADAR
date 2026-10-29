@@ -2,68 +2,99 @@
 
 AI-powered personal assistant for research and brief generation.
 
-A polished web app that helps you generate research briefs, identify signals, summarize findings, and plan next actions from a single topic.
+Hasti Research Radar is a premium research workflow app that turns a topic into a clear brief, strategic findings, risk analysis, and an execution plan. It is designed to feel like a founder-grade research assistant and can be extended for real web sourcing, saved workspaces, and enterprise team collaboration.
 
 ## Features
 
-- Smart research brief generation
-- Topic and audience targeting
-- Signal extraction and recommendations
-- Clean dashboard UI
-- Optional OpenAI integration
-- FastAPI backend with Jinja templates
-- Docker-ready deployment
+- Premium landing page and product experience
+- AI-powered research brief generation
+- Audience and goal-driven prompt engineering
+- Focus area and source mix configuration
+- Saved brief history with SQLite persistence
+- FastAPI + Jinja templates architecture
+- Docker deployment support
+- Solid test coverage for the core API
+
+## Tech stack
+
+- Python 3.12
+- FastAPI
+- Jinja2
+- SQLite for local data persistence
+- OpenAI-compatible API integration
+- Docker
 
 ## Quick start
 
-1. Create a virtual environment:
+1. Create and activate a virtual environment:
    ```bash
    python -m venv .venv
    source .venv/bin/activate
    ```
+
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Copy environment variables:
+
+3. Copy the environment file:
    ```bash
    cp .env.example .env
    ```
-4. Run the app:
+
+4. Start the app:
    ```bash
    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
    ```
-5. Open http://localhost:8000
 
-## Environment variables
+5. Open:
+   ```text
+   http://localhost:8000
+   ```
 
-- `OPENAI_API_KEY` - optional; enables GPT-powered generation
-- `APP_NAME` - display name for the app
-- `APP_VERSION` - app version
+## API
 
-## Example prompt
+Health check:
+```bash
+curl http://localhost:8000/api/health
+```
 
-> "Analyze the impact of AI on startup customer acquisition. Focus on product, competition, and execution risks for a founder in 2026."
+Generate a brief:
+```bash
+curl -X POST http://localhost:8000/api/research/brief \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic": "AI for venture research",
+    "audience": "founders and investors",
+    "goal": "Build a clear strategic roadmap",
+    "focus_areas": ["market opportunity", "product differentiation", "execution risk"],
+    "sources": ["public market research", "customer interviews", "industry analyst reports"]
+  }'
+```
 
 ## Project structure
 
 ```text
 hasti-research-radar/
 ├── app/
-│   ├── main.py
+│   ├── __init__.py
 │   ├── config.py
+│   ├── main.py
 │   ├── services/
 │   │   ├── __init__.py
-│   │   └── research.py
+│   │   ├── research.py
+│   │   └── storage.py
 │   ├── static/
 │   │   ├── app.js
 │   │   └── styles.css
-│   ├── templates/
-│   │   └── index.html
-│   └── __init__.py
+│   └── templates/
+│       ├── dashboard.html
+│       └── index.html
 ├── assets/
-│   ├── logo.svg
-│   └── hero-illustration.svg
+│   ├── hero-illustration.svg
+│   └── logo.svg
+├── data/
+│   └── research_briefs.db
 ├── tests/
 │   └── test_app.py
 ├── .env.example
@@ -74,13 +105,21 @@ hasti-research-radar/
 └── .python-version
 ```
 
-## Deployment
+## Docker
 
-Docker:
 ```bash
 docker build -t hasti-research-radar .
 docker run -p 8000:8000 hasti-research-radar
 ```
+
+## Roadmap
+
+- Real web search and source ingestion
+- User authentication and authoring dashboard
+- Team workspace collaboration
+- Export to PDF and Markdown
+- AI agent orchestration for multi-stage research
+- Advanced analytics and trend dashboards
 
 ## License
 

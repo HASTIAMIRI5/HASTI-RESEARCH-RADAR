@@ -11,37 +11,45 @@ except ImportError:  # pragma: no cover
 from app.config import settings
 
 
-def _build_fallback_brief(topic: str, focus_areas: list[str], sources: list[str], audience: str, goal: str) -> dict[str, Any]:
-    focus_text = ", ".join(focus_areas) if focus_areas else "market drivers, product quality, risks and execution"
-    source_text = ", ".join(sources) if sources else "public sources, user interviews, platform signals"
+def _ensure_list(value: Any, default: list[str]) -> list[str]:
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str):
+        cleaned = [part.strip() for part in value.split(",") if part.strip()]
+        return cleaned or default
+    return default
 
-    title = f"Research Brief: {topic}"
+
+def _fallback_brief(topic: str, focus_areas: list[str], sources: list[str], audience: str, goal: str) -> dict[str, Any]:
+    focus_text = ", ".join(focus_areas) if focus_areas else "product, demand, execution"
+    source_text = ", ".join(sources) if sources else "customer interviews, external research, market evidence"
+
     return {
-        "title": title,
+        "title": f"Research Brief: {topic}",
         "executive_summary": (
-            f"{topic} is a strategically relevant area with strong momentum and a need for disciplined execution. "
-            f"The most important opportunities sit in {focus_text}, while key attention should be paid to adoption, trust, and operational efficiency."
+            f"{topic} is strategically important across modern product and go-to-market planning. "
+            f"The strongest opportunities sit in {focus_text}, while the main constraints are likely to be clarity, trust, and disciplined execution."
         ),
         "key_findings": [
-            f"The topic is likely to matter most for {audience} because the value chain is increasingly shaped by speed, clarity, and trust.",
-            f"There is evidence of meaningful demand in {focus_text}, but adoption is likely to depend on measurable outcomes and product credibility.",
-            f"The strongest path forward is to validate assumptions with {source_text} and align recommended actions to a realistic first-year operating plan."
+            f"The category appears relevant for {audience} because the decision maker is increasingly focused on measurable outcomes and operating leverage.",
+            f"Demand and product-market fit are likely to benefit from stronger proof points, clearer positioning, and a sharper narrative around value delivery.",
+            f"The right next moves are to test the strongest assumptions with {source_text}, quantify friction, and prioritize the highest-impact opportunity first."
         ],
         "risks": [
-            "Weak differentiation from generic AI tooling or broad research content.",
-            "Overreliance on a single data source or anecdotal user feedback.",
-            "Poor product clarity leading to inconsistent value perception for the target audience."
+            "Weak product differentiation and generic messaging that fails to establish a clear wedge.",
+            "Overreliance on a single data source or anecdotal validation rather than a repeatable evidence loop.",
+            "Execution speed outpacing internal clarity, leading to inconsistent priorities and reduced confidence."
         ],
         "recommendations": [
-            "Define a narrow wedge for the first release and measure user value using explicit KPIs.",
-            "Turn research signals into a repeatable content and decision workflow instead of one-off outputs.",
-            "Build a feedback loop with customer interviews, usage data, and a concise monthly review process."
+            "Define a narrow target segment and articulate a crisp value proposition tied to measurable outcomes.",
+            "Test the core concept with customer feedback, competitor analysis, and a lightweight validation loop.",
+            "Convert insights into a 90-day roadmap with explicit hypotheses, metrics, and review checkpoints."
         ],
         "action_plan": [
-            "Week 1: map the persona, workflow, and outcome requirements.",
-            "Week 2: validate the core hypothesis against competitor and customer signals.",
-            "Week 3: prototype a focused workflow and measure engagement, retention, and conversion.",
-            "Week 4: refine the product narrative and shipping plan based on real evidence."
+            "Week 1: sharpen the user problem, segment, and success criteria.",
+            "Week 2: evaluate market signals, competitor positioning, and target customer friction.",
+            "Week 3: prototype the smallest viable workflow and collect structured user feedback.",
+            "Week 4: critique the evidence, adjust the plan, and prioritize the next sprint."
         ],
         "goal": goal,
         "audience": audience,
@@ -51,8 +59,8 @@ def _build_fallback_brief(topic: str, focus_areas: list[str], sources: list[str]
 
 def generate_brief(topic: str, focus_areas: list[str] | None = None, sources: list[str] | None = None, audience: str = "founders and operators", goal: str = "Build a clear research and action plan") -> dict[str, Any]:
     topic = (topic or "AI-powered research workflows").strip()
-    focus_areas = focus_areas or ["market demand", "product differentiation", "competitive positioning"]
-    sources = sources or ["public market research", "user interviews", "pattern analysis"]
+    focus_areas = _ensure_list(focus_areas, ["market demand", "product differentiation", "execution risk"])
+    sources = _ensure_list(sources, ["public market research", "customer interviews", "market patterns"])
     audience = audience or "founders and operators"
     goal = goal or "Build a clear research and action plan"
 
@@ -65,7 +73,7 @@ def generate_brief(topic: str, focus_areas: list[str] | None = None, sources: li
                     {
                         "role": "system",
                         "content": (
-                            "You are an expert strategy analyst. Return valid JSON only with fields: "
+                            "You are a senior strategy analyst and research operator. Return valid JSON only with keys: "
                             "title, executive_summary, key_findings, risks, recommendations, action_plan, goal, audience, source_mix."
                         ),
                     },
@@ -96,7 +104,6 @@ def generate_brief(topic: str, focus_areas: list[str] | None = None, sources: li
                 "source_mix": parsed.get("source_mix", ", ".join(sources)),
             }
         except Exception:
-            return _build_fallback_brief(topic, focus_areas, sources, audience, goal)
+            return _fallback_brief(topic, focus_areas, sources, audience, goal)
 
-    return _build_fallback_brief(topic, focus_areas, sources, audience, goal)
-
+    return _fallback_brief(topic, focus_areas, sources, audience, goal)

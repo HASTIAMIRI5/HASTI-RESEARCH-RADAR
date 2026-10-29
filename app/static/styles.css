@@ -1,432 +1,87 @@
-:root {
-  --bg: #07131f;
-  --bg-soft: #0d1d2b;
-  --panel: rgba(15, 29, 42, 0.86);
-  --panel-strong: rgba(9, 20, 28, 0.96);
-  --border: rgba(148, 163, 184, 0.18);
-  --primary: #7dd3fc;
-  --primary-strong: #38bdf8;
-  --accent: #c084fc;
-  --text: #e2e8f0;
-  --muted: #9fb3c8;
-  --success: #34d399;
-  --shadow: 0 30px 80px rgba(8, 13, 21, 0.5);
-}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ app_name }} Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}" />
+  </head>
+  <body>
+    <div class="page-shell dashboard-shell">
+      <header class="topbar dashboard-topbar">
+        <div class="brand-wrap">
+          <img src="/assets/logo.svg" alt="logo" class="brand-logo" />
+          <div>
+            <p class="eyebrow">WORKSPACE</p>
+            <h1>{{ app_name }}</h1>
+          </div>
+        </div>
+        <nav class="main-nav">
+          <a href="/">Home</a>
+          <a href="/#generator">Generator</a>
+          <a href="/dashboard" class="nav-button">Dashboard</a>
+        </nav>
+      </header>
 
-* {
-  box-sizing: border-box;
-}
+      <main class="dashboard-layout">
+        <aside class="sidebar-panel">
+          <div class="panel-header compact">
+            <p class="eyebrow">SUMMARY</p>
+          </div>
+          <div class="mini-metrics">
+            <div class="metric">
+              <span>Briefs saved</span>
+              <strong>{{ briefs|length }}</strong>
+            </div>
+            <div class="metric">
+              <span>Focus</span>
+              <strong>Strategy</strong>
+            </div>
+            <div class="metric">
+              <span>Mode</span>
+              <strong>AI + Insight</strong>
+            </div>
+          </div>
+        </aside>
 
-html {
-  scroll-behavior: smooth;
-}
+        <section class="dashboard-main">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">LIBRARY</p>
+              <h3>Recent research brief history</h3>
+            </div>
+            <a class="primary-btn small" href="/#generator">New brief</a>
+          </div>
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Inter", sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 30%),
-    radial-gradient(circle at top right, rgba(192, 132, 252, 0.14), transparent 30%),
-    var(--bg);
-  color: var(--text);
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-button, input, textarea {
-  font: inherit;
-}
-
-.page-shell {
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: 24px 20px 80px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 20px 0 22px;
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
-
-.eyebrow {
-  margin: 0 0 4px;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--primary);
-}
-
-h1, h2, h3, h4, h5, p {
-  margin: 0;
-}
-
-h1 {
-  font-size: clamp(1.2rem, 2vw, 1.8rem);
-  font-weight: 700;
-}
-
-.main-nav {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.main-nav a {
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.main-nav a:hover {
-  color: var(--text);
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 28px;
-  align-items: center;
-  padding: 48px 0 28px;
-}
-
-.hero-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.pill {
-  align-self: flex-start;
-  display: inline-flex;
-  background: rgba(125, 211, 252, 0.12);
-  color: var(--primary);
-  border: 1px solid rgba(125, 211, 252, 0.2);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.hero-copy h2 {
-  font-size: clamp(2.6rem, 5vw, 4.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.06em;
-}
-
-.hero-copy p {
-  color: var(--muted);
-  font-size: 1.08rem;
-  line-height: 1.7;
-  max-width: 640px;
-}
-
-.cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-.primary-btn, .secondary-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 20px;
-  border-radius: 12px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.primary-btn {
-  color: #03131f;
-  background: linear-gradient(135deg, var(--primary), #a5f3fc);
-  box-shadow: 0 20px 40px rgba(56, 189, 248, 0.32);
-  font-weight: 700;
-}
-
-.secondary-btn {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.primary-btn:hover, .secondary-btn:hover {
-  transform: translateY(-1px);
-}
-
-.stats {
-  list-style: none;
-  display: flex;
-  gap: 18px;
-  padding: 0;
-  margin: 8px 0 0;
-  flex-wrap: wrap;
-}
-
-.stats li {
-  display: flex;
-  flex-direction: column;
-  background: rgba(15, 29, 42, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px 14px;
-  min-width: 120px;
-}
-
-.stats strong {
-  font-size: 1.35rem;
-  color: var(--primary);
-}
-
-.stats span {
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-.hero-visual {
-  background: linear-gradient(180deg, rgba(9, 20, 28, 0.66), rgba(17, 32, 44, 0.8));
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  box-shadow: var(--shadow);
-  padding: 18px;
-}
-
-.feature-grid, .workflow-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.feature-card, .step {
-  background: rgba(15, 29, 42, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  padding: 26px 22px;
-}
-
-.feature-icon {
-  display: inline-flex;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  align-items: center;
-  justify-content: center;
-  background: rgba(125, 211, 252, 0.12);
-  color: var(--primary);
-  margin-bottom: 16px;
-  font-weight: 800;
-}
-
-.feature-card h3, .step h4 {
-  margin-bottom: 10px;
-  font-size: 1.25rem;
-}
-
-.feature-card p, .step p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.generator-panel, .workflow {
-  margin-top: 48px;
-  background: rgba(15, 29, 42, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.status-dot {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--success);
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  padding: 8px 10px;
-  border-radius: 999px;
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.status-dot::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.9);
-}
-
-.research-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.field-row {
-  display: block;
-}
-
-.two-col {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--text);
-  font-weight: 600;
-}
-
-label span {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-input, textarea {
-  width: 100%;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(8, 17, 25, 0.7);
-  color: var(--text);
-  padding: 14px 16px;
-  resize: vertical;
-}
-
-input:focus, textarea:focus {
-  outline: 2px solid rgba(125, 211, 252, 0.28);
-  border-color: rgba(125, 211, 252, 0.5);
-}
-
-.loading {
-  margin-top: 18px;
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.hidden {
-  display: none;
-}
-
-.result-panel {
-  margin-top: 26px;
-  background: rgba(7, 19, 31, 0.76);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  padding: 20px;
-}
-
-.result-header {
-  margin-bottom: 20px;
-}
-
-.result-header h4 {
-  font-size: 1.5rem;
-}
-
-.result-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.result-section p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.result-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.result-block {
-  background: rgba(15, 29, 42, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-}
-
-.result-block h5 {
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.result-block ul, .result-block ol {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  line-height: 1.7;
-}
-
-.workflow-steps {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.step span {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: var(--primary);
-  font-weight: 700;
-}
-
-@media (max-width: 900px) {
-  .hero,
-  .feature-grid,
-  .workflow-steps,
-  .result-grid,
-  .two-col {
-    grid-template-columns: 1fr;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .main-nav {
-    flex-wrap: wrap;
-  }
-}
+          <div class="brief-list">
+            {% if briefs %}
+              {% for brief in briefs %}
+                <article class="brief-card">
+                  <div class="brief-header-row">
+                    <h4>{{ brief.title }}</h4>
+                    <span class="status-dot ghost">Saved</span>
+                  </div>
+                  <p class="brief-meta">{{ brief.audience }} · {{ brief.goal }}</p>
+                  <p class="brief-summary">{{ brief.executive_summary[:180] }}{% if brief.executive_summary|length > 180 %}...{% endif %}</p>
+                  <div class="brief-tags">
+                    {% for item in brief.key_findings[:3] %}
+                      <span>{{ item[:48] }}</span>
+                    {% endfor %}
+                  </div>
+                </article>
+              {% endfor %}
+            {% else %}
+              <div class="empty-state">
+                <h4>No briefs yet</h4>
+                <p>Create your first research brief from the main generator page.</p>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
